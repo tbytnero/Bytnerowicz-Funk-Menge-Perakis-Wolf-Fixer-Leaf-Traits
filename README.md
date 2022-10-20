@@ -20,4 +20,4 @@ The second and third are data from Adams et al. (2016) Proceedings of the Nation
 
 The Adams et al. data were not publicly available from PNAS and were provided to us by request from Mark Adams. 
 
-We include them here as an analysis of some of these data (those from Figure 3 in Adams et al.) underlies some of our results.
+We include them here as an analysis of some of these data (those from Figure 3 in Adams et al.) underlie some of our results.
