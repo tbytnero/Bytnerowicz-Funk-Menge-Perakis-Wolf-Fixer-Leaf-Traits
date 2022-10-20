@@ -9,7 +9,7 @@ There are two R scripts:
 
 The first recreates the analyses and figures for the Main Text: MainText_Analysis_Figures.R
 
-The second recreates the analyses and figures for the Main Text: Supplement_Analysis_Figures.R
+The second recreates the analyses and figures for the Supplement: Supplement_Analysis_Figures.R
 
 ________________________________________________________________________________________________________________________________________________________________________
 There are three .csv files of data:
