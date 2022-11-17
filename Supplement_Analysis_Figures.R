@@ -1,5 +1,5 @@
 #######################################################################################################
-#R code for Bytnerowicz et al., 2022, submitted to New Phytologist
+#R code for Bytnerowicz et al., 2022, submitted to Journal of Ecology
 #######################################################################################################
 
 #This script is for the material in the Supplement
