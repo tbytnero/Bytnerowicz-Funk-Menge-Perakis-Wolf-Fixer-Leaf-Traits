@@ -2,7 +2,7 @@
 
 R scripts and data to recreate analyses and figures for: 
 
-Bytnerowicz et al. "Nitrogen-fixing trees are not different than non-fixing trees in how photosynthesis and water use efficiency scale with leaf nitrogen, but they have more nitrogen"
+Bytnerowicz et al. "Nitrogen-fixing trees are not different than non-fixing trees in how photosynthesis and water use efficiency scale with leaf nitrogen, but they have higher leaf nitrogen"
 
 ________________________________________________________________________________________________________________________________________________________________________
 There are two R scripts:
