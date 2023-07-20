@@ -26,6 +26,7 @@ dat<-read.csv("Bytnerowicz_etal_Asat_WUE_Nfix_data.csv")
 dat.ge<-dat[dat$WL.DIS.DAM==0,] #Remove water logged/diseased/damaged individuals from gas exchange data
 dat.bio.end<-dat[dat$Use_biomass_end==1,] #Remove unhealthy individuals from biomass data
 dat.bio.end.ge<-dat.bio.end[dat.bio.end$WL.DIS.DAM==0,] #Remove water logged/diseased/damaged individuals from gas exchange data
+dat.bio.end$d13C<-as.numeric(dat.bio.end$d13C)
 
 #Read in Adams et al. 2016 data
 paired.dat<-read.csv("Adams_paired_WUE.csv")
@@ -793,8 +794,8 @@ summary(Lb.WUE.all.lmer14)
 r.squaredGLMM(Lb.WUE.all.lmer14) #R2m = 0.03, R2c = 0.56
 
 Lb.WUE.cut<-as.data.frame(na.omit(cbind("Species"=dat.bio.end.ge$Species,"WUE..A.g."=dat.bio.end.ge$WUE..A.g.,"Leaf_bio_g_end"=dat.bio.end.ge$Leaf_bio_g_end)))
-Lb.WUE.all.lmer14<-lmer(log10(Leaf_bio_g_end)~log10(WUE..A.g.) + (1|Species), data = Lb.WUE.cut)
-Lb.WUE.all.lmer14.red<-lmer(log10(Leaf_bio_g_end)~1 + (1|Species), data = Lb.WUE.cut)
+Lb.WUE.all.lmer14<-lmer(log10(as.numeric(Leaf_bio_g_end))~log10(as.numeric(WUE..A.g.)) + (1|Species), data = Lb.WUE.cut)
+Lb.WUE.all.lmer14.red<-lmer(log10(as.numeric(Leaf_bio_g_end))~1 + (1|Species), data = Lb.WUE.cut)
 anova(Lb.WUE.all.lmer14.red,Lb.WUE.all.lmer14) # p = 0.006
 
 Lb.WUE.slopemu<-summary(Lb.WUE.all.lmer14)$coefficients[[2,1]]
@@ -855,9 +856,9 @@ summary(Lb.d13C.all.lmer14)
 r.squaredGLMM(Lb.d13C.all.lmer14) #R2m = 0.09 , R2c = 0.56
 
 Lb.d13C.cut<-as.data.frame(na.omit(cbind("Species"=dat.bio.end$Species,"d13C"=dat.bio.end$d13C,"Leaf_bio_g_end"=dat.bio.end$Leaf_bio_g_end)))
-Lb.d13C.all.lmer14<-lmer(log10(Leaf_bio_g_end)~d13C + (1|Species), data = Lb.d13C.cut)
-Lb.d13C.all.lmer14.red<-lmer(log10(Leaf_bio_g_end)~1 + (1|Species), data = Lb.d13C.cut)
-anova(Lb.d13C.all.lmer14.red,Lb.d13C.all.lmer14) # p = 0.0008
+Lb.d13C.all.lmer14<-lmer(log10(as.numeric(Leaf_bio_g_end))~as.numeric(d13C) + (1|Species), data = Lb.d13C.cut)
+Lb.d13C.all.lmer14.red<-lmer(log10(as.numeric(Leaf_bio_g_end))~1 + (1|Species), data = Lb.d13C.cut)
+anova(Lb.d13C.all.lmer14.red,Lb.d13C.all.lmer14) # p <0.001
 
 Lb.d13C.slopemu<-summary(Lb.d13C.all.lmer14)$coefficients[[2,1]]
 Lb.d13C.intmu<-summary(Lb.d13C.all.lmer14)$coefficients[[1,1]]
@@ -891,9 +892,9 @@ AGB.d13C.slopemu<-summary(AGB.d13C.all.lmer14)$coefficients[[2,1]]
 AGB.d13C.intmu<-summary(AGB.d13C.all.lmer14)$coefficients[[1,1]]
 
 AGB.d13C.cut<-as.data.frame(na.omit(cbind("Species"=dat.bio.end$Species,"d13C"=dat.bio.end$d13C,"AGB_est_kg_harv"=dat.bio.end$AGB_est_kg_harv)))
-AGB.d13C.all.lmer14<-lmer(log10(AGB_est_kg_harv)~d13C + (1|Species), data = AGB.d13C.cut)
-AGB.d13C.all.lmer14.red<-lmer(log10(AGB_est_kg_harv)~1 + (1|Species), data = AGB.d13C.cut)
-anova(AGB.d13C.all.lmer14.red,AGB.d13C.all.lmer14) # p = 0.0004
+AGB.d13C.all.lmer14<-lmer(log10(as.numeric(AGB_est_kg_harv))~as.numeric(d13C) + (1|Species), data = AGB.d13C.cut)
+AGB.d13C.all.lmer14.red<-lmer(log10(as.numeric(AGB_est_kg_harv))~1 + (1|Species), data = AGB.d13C.cut)
+anova(AGB.d13C.all.lmer14.red,AGB.d13C.all.lmer14) # p<0.001
 
 
 #######################################################################################################
@@ -2097,14 +2098,14 @@ ROPS_WUE<-10^mean(log10(ROPS.ge.LN$WUE..A.g.))
 WUEi<-c(ACKO_WUE,ALRU_WUE,BENI_WUE,CAEQ_WUE,DOVI_WUE,GLSE_WUE,MOFA_WUE,PSCA_WUE,PSME_WUE,ROPS_WUE)
 
 
-ACKO_d13C<-coef(d13C.sp2)[[1]][[1]][[1]]
+ACKO_d13C<-coef(d13C.sp2)[[1]][[1]][[4]]
 ALRU_d13C<-coef(d13C.sp2)[[1]][[1]][[1]]+coef(d13C.sp2)[[1]][[2]][[1]]
 BENI_d13C<-coef(d13C.sp2)[[1]][[3]][[1]]+(coef(d13C.sp2)[[1]][[1]][[2]]*0.363636364+coef(d13C.sp2)[[1]][[1]][[3]]*0.636363636)
-CAEQ_d13C<-coef(d13C.sp2)[[1]][[1]][[1]]+coef(d13C.sp2)[[1]][[4]][[1]]
-DOVI_d13C<-coef(d13C.sp2)[[1]][[1]][[1]]+coef(d13C.sp2)[[1]][[5]][[1]]
-GLSE_d13C<-coef(d13C.sp2)[[1]][[1]][[1]]+coef(d13C.sp2)[[1]][[6]][[1]]
-MOFA_d13C<-coef(d13C.sp2)[[1]][[1]][[1]]+coef(d13C.sp2)[[1]][[7]][[1]]
-PSCA_d13C<-coef(d13C.sp2)[[1]][[1]][[1]]+coef(d13C.sp2)[[1]][[8]][[1]]
+CAEQ_d13C<-coef(d13C.sp2)[[1]][[1]][[5]]+coef(d13C.sp2)[[1]][[4]][[1]]
+DOVI_d13C<-coef(d13C.sp2)[[1]][[1]][[4]]+coef(d13C.sp2)[[1]][[5]][[1]]
+GLSE_d13C<-coef(d13C.sp2)[[1]][[1]][[5]]+coef(d13C.sp2)[[1]][[6]][[1]]
+MOFA_d13C<-coef(d13C.sp2)[[1]][[1]][[4]]+coef(d13C.sp2)[[1]][[7]][[1]]
+PSCA_d13C<-coef(d13C.sp2)[[1]][[1]][[5]]+coef(d13C.sp2)[[1]][[8]][[1]]
 PSME_d13C<-coef(d13C.sp2)[[1]][[1]][[1]]+coef(d13C.sp2)[[1]][[9]][[1]]
 ROPS_d13C<-coef(d13C.sp2)[[1]][[10]][[1]]+(coef(d13C.sp2)[[1]][[1]][[2]]*0.309090909+coef(d13C.sp2)[[1]][[1]][[3]]*0.690909091)
 
@@ -2128,7 +2129,8 @@ LMA<-c(ACKO_LMA,ALRU_LMA,BENI_LMA,CAEQ_LMA,DOVI_LMA,GLSE_LMA,MOFA_LMA,PSCA_LMA,P
 #This is a combination of our experimental species-level data with woody data from Adams et al. (2016)
 Location<-c("VO","OR","NY","WA","VO","WA","VO","WA","OR","NY")
 Authors<-rep("Bytnerowicz",10)
-Species<-c("ACKO","ALRU","BENI","CAEQ","DOVI","GLSE","MOFA","PSCA","PSME","ROPS")
+Species<-c("Acacia koa","Alnus rubra","Betula nigra","Casuarina equisetifolia","Dodonea viscosa",
+           "Gliricidia sepium","Morella faya","Psidium cattleianum","Pseudotsuga menziesii","Robinia pseudoacacia")
 N_fix<-c("F","F","N","F","N","F","F","N","N","F")
 Lat<-c(19.47,44.56,41.42,19.64,19.47,19.64,19.47,19.64,44.56,41.42)
 Long<-c(-155.26,-123.60,-74.02,-155.08,-155.26,-155.08,-155.26,-155.08,-123.60,-74.02)
@@ -2144,6 +2146,10 @@ Adams.woody.ge<-data.frame("Location"=Adams.woody.ge.all$Location,"Authors"=Adam
 
 all.dat.ge<-rbind(exp.df.ge,Adams.woody.ge) #combined gas exchange data frame
 
+length(unique(all.dat.ge$Species)) #263
+length(unique(all.dat.ge[all.dat.ge$N_fix=="F",]$Species)) #52
+length(unique(all.dat.ge[all.dat.ge$N_fix=="N",]$Species)) #211
+
 Adams.woody.d13C.all<-paired.d13C.dat[paired.d13C.dat$Growth_Habit %in% c('Ev. Ang.','Dec. Ang.','Gymnosperm'),]
 
 Adams.woody.d13C<-data.frame("Location"=Adams.woody.d13C.all$Location,"Authors"=Adams.woody.d13C.all$Authors,"Species"=Adams.woody.d13C.all$Species,
@@ -2151,105 +2157,113 @@ Adams.woody.d13C<-data.frame("Location"=Adams.woody.d13C.all$Location,"Authors"=
                              "d13C"=Adams.woody.d13C.all$deltaC,"LMA"=Adams.woody.d13C.all$LMA)
 
 all.dat.d13C<-rbind(exp.df.d13C,Adams.woody.d13C) #combined d13C data frame
+all.dat.d13C<-rbind(head(exp.df.d13C,10),head(Adams.woody.d13C,457)) #combined d13C data frame
+
+length(unique(all.dat.d13C$Species)) #149
+length(unique(all.dat.d13C[all.dat.d13C$N_fix=="F",]$Species)) #32
+length(unique(all.dat.d13C[all.dat.d13C$N_fix=="N",]$Species)) #117
 
 ##Asat~N fixer status
 
 #Find best random effect structure
-Aa.all.ge1<-lmer(log10(Aarea)~N_fix + (1|Location), data = all.dat.ge)
-Aa.all.ge2<-lmer(log10(Aarea)~N_fix + (N_fix|Location), data = all.dat.ge)
-Aa.all.ge3<-lm(log10(Aarea)~N_fix, data = all.dat.ge)
-Aa.all.ge4<-lmer(log10(Aarea)~N_fix + (1|Growth_Habit), data = all.dat.ge)
-Aa.all.ge5<-lmer(log10(Aarea)~N_fix + (N_fix|Growth_Habit), data = all.dat.ge)
-Aa.all.ge6<-lmer(log10(Aarea)~N_fix + (N_fix|Location) + (1|Growth_Habit), data = all.dat.ge)
-Aa.all.ge7<-lmer(log10(Aarea)~N_fix + (N_fix|Location) + (N_fix|Growth_Habit), data = all.dat.ge)
-Aa.all.ge8<-lmer(log10(Aarea)~N_fix + (1|Location) + (1|Growth_Habit), data = all.dat.ge)
-Aa.all.ge9<-lmer(log10(Aarea)~N_fix + (1|Location) + (N_fix|Growth_Habit), data = all.dat.ge)
+Aa.all.ge1<-lm(log10(Aarea)~N_fix, data = all.dat.ge)
+Aa.all.ge2<-lmer(log10(Aarea)~N_fix + (1|Location), data = all.dat.ge)
+Aa.all.ge3<-lmer(log10(Aarea)~N_fix + (1|Growth_Habit), data = all.dat.ge)
+Aa.all.ge4<-lmer(log10(Aarea)~N_fix + (1|Species), data = all.dat.ge)
+Aa.all.ge5<-lmer(log10(Aarea)~N_fix + (1|Location) + (1|Growth_Habit), data = all.dat.ge)
+Aa.all.ge6<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Location), data = all.dat.ge)
+Aa.all.ge7<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Growth_Habit), data = all.dat.ge)
+Aa.all.ge8<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = all.dat.ge)
+
 
 AICctab(Aa.all.ge1,Aa.all.ge2,Aa.all.ge3,
         Aa.all.ge4,Aa.all.ge5,Aa.all.ge6,
-        Aa.all.ge7,Aa.all.ge8,Aa.all.ge9,nobs=175)
+        Aa.all.ge7,Aa.all.ge8,nobs=276)
+
 #8 is best
 
 #Test significance of N fixer status
-Aa.all.ge8<-lmer(log10(Aarea)~N_fix + (1|Location) + (1|Growth_Habit), data = all.dat.ge)
-Aa.all.ge8.red<-lmer(log10(Aarea)~(1|Location) + (1|Growth_Habit), data = all.dat.ge)
+Aa.all.ge8<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = all.dat.ge)
+Aa.all.ge8.red<-lmer(log10(Aarea)~(1|Species) + (1|Location) + (1|Growth_Habit), data = all.dat.ge)
 
 anova(Aa.all.ge8.red,Aa.all.ge8)
-#p=0.09; marginally significant
+#p=0.05; marginally significant
 
 ##gsw~N fixer status
 
 #Find best random effect structure
-g.all.ge1<-lmer(log10(g)~N_fix + (1|Location), data = all.dat.ge)
-g.all.ge2<-lmer(log10(g)~N_fix + (N_fix|Location), data = all.dat.ge)
-g.all.ge3<-lm(log10(g)~N_fix, data = all.dat.ge)
-g.all.ge4<-lmer(log10(g)~N_fix + (1|Growth_Habit), data = all.dat.ge)
-g.all.ge5<-lmer(log10(g)~N_fix + (N_fix|Growth_Habit), data = all.dat.ge)
-g.all.ge6<-lmer(log10(g)~N_fix + (N_fix|Location) + (1|Growth_Habit), data = all.dat.ge)
-g.all.ge7<-lmer(log10(g)~N_fix + (N_fix|Location) + (N_fix|Growth_Habit), data = all.dat.ge)
-g.all.ge8<-lmer(log10(g)~N_fix + (1|Location) + (1|Growth_Habit), data = all.dat.ge)
-g.all.ge9<-lmer(log10(g)~N_fix + (1|Location) + (N_fix|Growth_Habit), data = all.dat.ge)
+g.all.ge1<-lm(log10(g)~N_fix, data = all.dat.ge)
+g.all.ge2<-lmer(log10(g)~N_fix + (1|Location), data = all.dat.ge)
+g.all.ge3<-lmer(log10(g)~N_fix + (1|Growth_Habit), data = all.dat.ge)
+g.all.ge4<-lmer(log10(g)~N_fix + (1|Species), data = all.dat.ge)
+g.all.ge5<-lmer(log10(g)~N_fix + (1|Location) + (1|Growth_Habit), data = all.dat.ge)
+g.all.ge6<-lmer(log10(g)~N_fix + (1|Species) + (1|Location), data = all.dat.ge)
+g.all.ge7<-lmer(log10(g)~N_fix + (1|Species) + (1|Growth_Habit), data = all.dat.ge)
+g.all.ge8<-lmer(log10(g)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = all.dat.ge)
+
 
 AICctab(g.all.ge1,g.all.ge2,g.all.ge3,
         g.all.ge4,g.all.ge5,g.all.ge6,
-        g.all.ge7,g.all.ge8,g.all.ge9,nobs=175)
-#1 is best
+        g.all.ge7,g.all.ge8,nobs=276)
+
+#6 is best
 
 #Test significance of N fixer status
-g.all.ge1<-lmer(log10(g)~N_fix + (1|Location), data = all.dat.ge)
-g.all.ge1.red<-lmer(log10(g)~(1|Location), data = all.dat.ge)
+g.all.ge6<-lmer(log10(g)~N_fix + (1|Species) + (1|Location), data = all.dat.ge)
+g.all.ge6.red<-lmer(log10(g)~(1|Species) + (1|Location), data = all.dat.ge)
 
-anova(g.all.ge1.red,g.all.ge1)
-#p=0.48
+anova(g.all.ge6.red,g.all.ge6)
+#p=0.33
 
 ##WUEi~N fixer status
 
 #Find best random effect structure
-WUEi.all.ge1<-lmer(log10(WUEi)~N_fix + (1|Location), data = all.dat.ge)
-WUEi.all.ge2<-lmer(log10(WUEi)~N_fix + (N_fix|Location), data = all.dat.ge)
-WUEi.all.ge3<-lm(log10(WUEi)~N_fix, data = all.dat.ge)
-WUEi.all.ge4<-lmer(log10(WUEi)~N_fix + (1|Growth_Habit), data = all.dat.ge)
-WUEi.all.ge5<-lmer(log10(WUEi)~N_fix + (N_fix|Growth_Habit), data = all.dat.ge)
-WUEi.all.ge6<-lmer(log10(WUEi)~N_fix + (N_fix|Location) + (1|Growth_Habit), data = all.dat.ge)
-WUEi.all.ge7<-lmer(log10(WUEi)~N_fix + (N_fix|Location) + (N_fix|Growth_Habit), data = all.dat.ge)
-WUEi.all.ge8<-lmer(log10(WUEi)~N_fix + (1|Location) + (1|Growth_Habit), data = all.dat.ge)
-WUEi.all.ge9<-lmer(log10(WUEi)~N_fix + (1|Location) + (N_fix|Growth_Habit), data = all.dat.ge)
+WUEi.all.ge1<-lm(log10(WUEi)~N_fix, data = all.dat.ge)
+WUEi.all.ge2<-lmer(log10(WUEi)~N_fix + (1|Location), data = all.dat.ge)
+WUEi.all.ge3<-lmer(log10(WUEi)~N_fix + (1|Growth_Habit), data = all.dat.ge)
+WUEi.all.ge4<-lmer(log10(WUEi)~N_fix + (1|Species), data = all.dat.ge)
+WUEi.all.ge5<-lmer(log10(WUEi)~N_fix + (1|Location) + (1|Growth_Habit), data = all.dat.ge)
+WUEi.all.ge6<-lmer(log10(WUEi)~N_fix + (1|Species) + (1|Location), data = all.dat.ge)
+WUEi.all.ge7<-lmer(log10(WUEi)~N_fix + (1|Species) + (1|Growth_Habit), data = all.dat.ge)
+WUEi.all.ge8<-lmer(log10(WUEi)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = all.dat.ge)
+
 
 AICctab(WUEi.all.ge1,WUEi.all.ge2,WUEi.all.ge3,
         WUEi.all.ge4,WUEi.all.ge5,WUEi.all.ge6,
-        WUEi.all.ge7,WUEi.all.ge8,WUEi.all.ge9,nobs=175)
-#1 is best
+        WUEi.all.ge7,WUEi.all.ge8,nobs=276)
+
+#2 is best
 
 #Test significance of N fixer status
-WUEi.all.ge1<-lmer(log10(WUEi)~N_fix + (1|Location), data = all.dat.ge)
-WUEi.all.ge1.red<-lmer(log10(WUEi)~(1|Location), data = all.dat.ge)
+WUEi.all.ge2<-lmer(log10(WUEi)~N_fix + (1|Location), data = all.dat.ge)
+WUEi.all.ge2.red<-lmer(log10(WUEi)~(1|Location), data = all.dat.ge)
 
-anova(WUEi.all.ge1.red,WUEi.all.ge1)
-#p=0.54
+anova(WUEi.all.ge2.red,WUEi.all.ge2)
+#p=0.73
 
 ##d13C~N fixer status
 
 #Find best random effect structure
-d13C.all.d13C1<-lmer(d13C~N_fix + (1|Location), data = all.dat.d13C)
-d13C.all.d13C2<-lmer(d13C~N_fix + (N_fix|Location), data = all.dat.d13C)
-d13C.all.d13C3<-lm(d13C~N_fix, data = all.dat.d13C)
-d13C.all.d13C4<-lmer(d13C~N_fix + (1|Growth_Habit), data = all.dat.d13C)
-d13C.all.d13C5<-lmer(d13C~N_fix + (N_fix|Growth_Habit), data = all.dat.d13C)
-d13C.all.d13C6<-lmer(d13C~N_fix + (N_fix|Location) + (1|Growth_Habit), data = all.dat.d13C)
-d13C.all.d13C7<-lmer(d13C~N_fix + (N_fix|Location) + (N_fix|Growth_Habit), data = all.dat.d13C)
-d13C.all.d13C8<-lmer(d13C~N_fix + (1|Location) + (1|Growth_Habit), data = all.dat.d13C)
-d13C.all.d13C9<-lmer(d13C~N_fix + (1|Location) + (N_fix|Growth_Habit), data = all.dat.d13C)
+d13C.all.d13C1<-lm(d13C~N_fix, data = all.dat.d13C)
+d13C.all.d13C2<-lmer(d13C~N_fix + (1|Location), data = all.dat.d13C)
+d13C.all.d13C3<-lmer(d13C~N_fix + (1|Growth_Habit), data = all.dat.d13C)
+d13C.all.d13C4<-lmer(d13C~N_fix + (1|Species), data = all.dat.d13C)
+d13C.all.d13C5<-lmer(d13C~N_fix + (1|Location) + (1|Growth_Habit), data = all.dat.d13C)
+d13C.all.d13C6<-lmer(d13C~N_fix + (1|Species) + (1|Location), data = all.dat.d13C)
+d13C.all.d13C7<-lmer(d13C~N_fix + (1|Species) + (1|Growth_Habit), data = all.dat.d13C)
+d13C.all.d13C8<-lmer(d13C~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = all.dat.d13C)
 
 AICctab(d13C.all.d13C1,d13C.all.d13C2,d13C.all.d13C3,
         d13C.all.d13C4,d13C.all.d13C5,d13C.all.d13C6,
-        d13C.all.d13C7,d13C.all.d13C8,d13C.all.d13C9,nobs=255)
-#1 is best
+        d13C.all.d13C7,d13C.all.d13C8,nobs=255)
+
+#6 is best
 
 #Test significance of N fixer status
-d13C.all.d13C1<-lmer(d13C~N_fix + (1|Location), data = all.dat.d13C)
-d13C.all.d13C1.red<-lmer(d13C~(1|Location), data = all.dat.d13C)
+d13C.all.d13C6<-lmer(d13C~N_fix + (1|Species) + (1|Location), data = all.dat.d13C)
+d13C.all.d13C6.red<-lmer(d13C~(1|Species) + (1|Location), data = all.dat.d13C)
 
-anova(d13C.all.d13C1.red,d13C.all.d13C1)
+anova(d13C.all.d13C6.red,d13C.all.d13C6)
 #p<0.001; significant
 
 #######################################################################################################
@@ -2381,8 +2395,8 @@ summary(Lb.Aa.all.lmer13)
 r.squaredGLMM(Lb.Aa.all.lmer13) #0.02, 0.60
 
 Lb.Aa.cut<-as.data.frame(na.omit(cbind("Species"=dat.bio.end.ge$Species,"A_area"=dat.bio.end.ge$A_area,"Leaf_bio_g_end"=dat.bio.end.ge$Leaf_bio_g_end)))
-Lb.Aa.all.lmer13<-lmer(log10(Leaf_bio_g_end)~log10(A_area) + (log10(A_area)|Species), data = Lb.Aa.cut)
-Lb.Aa.all.lmer13.red<-lmer(log10(Leaf_bio_g_end)~1 + (log10(A_area)|Species), data = Lb.Aa.cut)
+Lb.Aa.all.lmer13<-lmer(log10(as.numeric(Leaf_bio_g_end))~log10(as.numeric(A_area)) + (log10(as.numeric(A_area))|Species), data = Lb.Aa.cut)
+Lb.Aa.all.lmer13.red<-lmer(log10(as.numeric(Leaf_bio_g_end))~1 + (log10(as.numeric(A_area))|Species), data = Lb.Aa.cut)
 anova(Lb.Aa.all.lmer13.red,Lb.Aa.all.lmer13) # p = 0.23
 
 Lb.Aa.slopemu<-summary(Lb.Aa.all.lmer13)$coefficients[[2,1]]
@@ -2419,6 +2433,324 @@ anova(AGB.Aa.all.lmer13.red,AGB.Aa.all.lmer13) #p=0.16
 
 AGB.Aa.slopemu<-summary(AGB.Aa.all.lmer13)$coefficients[[2,1]]
 AGB.Aa.intmu<-summary(AGB.Aa.all.lmer13)$coefficients[[1,1]]
+
+
+#######################################################################################################
+
+###For supplementary figure 15 (plus additional analyses described in Supplementary Note 3)
+
+##Control plants from field fertilization experiment
+
+#Asat
+Aa.f.sp<-lmer(log10(A_area)~Fixer + (1|Species/Meas) + (1|Site), data = dat.ge.LN)
+Aa.f.sp2<-lmer(log10(A_area)~Fixer + (1|Species) + (1|Site), data = dat.ge.LN)
+Aa.f.sp3<-lmer(log10(A_area)~Fixer + (1|Species), data = dat.ge.LN)
+Aa.f.sp4<-lmer(log10(A_area)~Fixer + (1|Species/Meas), data = dat.ge.LN)
+
+AICctab(Aa.f.sp,Aa.f.sp2,Aa.f.sp3,Aa.f.sp4,nobs=85)
+
+Aa.f.sp3.red<-lmer(log10(A_area)~(1|Species), data = dat.ge.LN)
+anova(Aa.f.sp3.red,Aa.f.sp3) #p=0.10
+
+summary(Aa.f.sp3)
+
+#gsw
+g.f.sp<-lmer(log10(g)~Fixer + (1|Species/Meas) + (1|Site), data = dat.ge.LN)
+g.f.sp2<-lmer(log10(g)~Fixer + (1|Species) + (1|Site), data = dat.ge.LN)
+g.f.sp3<-lmer(log10(g)~Fixer + (1|Species), data = dat.ge.LN)
+g.f.sp4<-lmer(log10(g)~Fixer + (1|Species/Meas), data = dat.ge.LN)
+
+AICctab(g.f.sp,g.f.sp2,g.f.sp3,g.f.sp4,nobs=85)
+
+g.f.sp3.red<-lmer(log10(g)~(1|Species), data = dat.ge.LN)
+anova(g.f.sp3.red,g.f.sp3) #p=0.47
+
+summary(g.f.sp3)
+
+#WUEi
+WUE.f.sp<-lmer(log10(WUE..A.g.)~Fixer + (1|Species/Meas) + (1|Site), data = dat.ge.LN)
+WUE.f.sp2<-lmer(log10(WUE..A.g.)~Fixer + (1|Species) + (1|Site), data = dat.ge.LN)
+WUE.f.sp3<-lmer(log10(WUE..A.g.)~Fixer + (1|Species), data = dat.ge.LN)
+WUE.f.sp4<-lmer(log10(WUE..A.g.)~Fixer + (1|Species/Meas), data = dat.ge.LN)
+
+AICctab(WUE.f.sp,WUE.f.sp2,WUE.f.sp3,WUE.f.sp4,nobs=85)
+
+WUE.f.sp3.red<-lmer(log10(WUE..A.g.)~(1|Species), data = dat.ge.LN)
+anova(WUE.f.sp3.red,WUE.f.sp3) #p=0.97
+
+summary(WUE.f.sp3)
+
+#d13C
+d13C.f.sp<-lmer(d13C~Fixer + (1|Species/Meas) + (1|Site), data = dat.LN)
+d13C.f.sp2<-lmer(d13C~Fixer + (1|Species) + (1|Site), data = dat.LN)
+d13C.f.sp3<-lmer(d13C~Fixer + (1|Species), data = dat.LN)
+d13C.f.sp4<-lmer(d13C~Fixer + (1|Species/Meas), data = dat.LN)
+
+AICctab(d13C.f.sp,d13C.f.sp2,d13C.f.sp3,d13C.f.sp4,nobs=92)
+
+d13C.f.sp2.red<-lmer(d13C~(1|Species) + (1|Site), data = dat.LN)
+anova(d13C.f.sp2.red,d13C.f.sp2) #p=0.52
+
+summary(d13C.f.sp2)
+
+##All plants in Adams et al. (2016) PNAS
+
+#Asat
+Aa.Adams.all.ge1<-lm(log10(Aarea)~N_fix, data = paired.dat)
+Aa.Adams.all.ge2<-lmer(log10(Aarea)~N_fix + (1|Location), data = paired.dat)
+Aa.Adams.all.ge3<-lmer(log10(Aarea)~N_fix + (1|Growth_Habit), data = paired.dat)
+Aa.Adams.all.ge4<-lmer(log10(Aarea)~N_fix + (1|Species), data = paired.dat)
+Aa.Adams.all.ge5<-lmer(log10(Aarea)~N_fix + (1|Location) + (1|Growth_Habit), data = paired.dat)
+Aa.Adams.all.ge6<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Location), data = paired.dat)
+Aa.Adams.all.ge7<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Growth_Habit), data = paired.dat)
+Aa.Adams.all.ge8<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = paired.dat)
+
+AICctab(Aa.Adams.all.ge1,Aa.Adams.all.ge2,Aa.Adams.all.ge3,
+        Aa.Adams.all.ge4,Aa.Adams.all.ge5,Aa.Adams.all.ge6,
+        Aa.Adams.all.ge7,Aa.Adams.all.ge8,nobs=374)
+#8 is best
+
+Aa.Adams.all.ge8.red<-lmer(log10(Aarea)~(1|Species) + (1|Location) + (1|Growth_Habit), data = paired.dat)
+anova(Aa.Adams.all.ge8,Aa.Adams.all.ge8.red)
+#p=0.004
+
+summary(Aa.Adams.all.ge8)
+
+#gsw
+g.Adams.all.ge1<-lm(log10(gsarea)~N_fix, data = paired.dat)
+g.Adams.all.ge2<-lmer(log10(gsarea)~N_fix + (1|Location), data = paired.dat)
+g.Adams.all.ge3<-lmer(log10(gsarea)~N_fix + (1|Growth_Habit), data = paired.dat)
+g.Adams.all.ge4<-lmer(log10(gsarea)~N_fix + (1|Species), data = paired.dat)
+g.Adams.all.ge5<-lmer(log10(gsarea)~N_fix + (1|Location) + (1|Growth_Habit), data = paired.dat)
+g.Adams.all.ge6<-lmer(log10(gsarea)~N_fix + (1|Species) + (1|Location), data = paired.dat)
+g.Adams.all.ge7<-lmer(log10(gsarea)~N_fix + (1|Species) + (1|Growth_Habit), data = paired.dat)
+g.Adams.all.ge8<-lmer(log10(gsarea)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = paired.dat)
+
+AICctab(g.Adams.all.ge1,g.Adams.all.ge2,g.Adams.all.ge3,
+        g.Adams.all.ge4,g.Adams.all.ge5,g.Adams.all.ge6,
+        g.Adams.all.ge7,g.Adams.all.ge8,nobs=374)
+#8 is best
+
+g.Adams.all.ge8.red<-lmer(log10(gsarea)~(1|Species) + (1|Location) + (1|Growth_Habit), data = paired.dat)
+anova(g.Adams.all.ge8,g.Adams.all.ge8.red)
+#p=0.04
+
+summary(g.Adams.all.ge8)
+
+#WUEi
+WUE.Adams.all.ge1<-lm(log10(WUEi)~N_fix, data = paired.dat)
+WUE.Adams.all.ge2<-lmer(log10(WUEi)~N_fix + (1|Location), data = paired.dat)
+WUE.Adams.all.ge3<-lmer(log10(WUEi)~N_fix + (1|Growth_Habit), data = paired.dat)
+WUE.Adams.all.ge4<-lmer(log10(WUEi)~N_fix + (1|Species), data = paired.dat)
+WUE.Adams.all.ge5<-lmer(log10(WUEi)~N_fix + (1|Location) + (1|Growth_Habit), data = paired.dat)
+WUE.Adams.all.ge6<-lmer(log10(WUEi)~N_fix + (1|Species) + (1|Location), data = paired.dat)
+WUE.Adams.all.ge7<-lmer(log10(WUEi)~N_fix + (1|Species) + (1|Growth_Habit), data = paired.dat)
+WUE.Adams.all.ge8<-lmer(log10(WUEi)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = paired.dat)
+
+AICctab(WUE.Adams.all.ge1,WUE.Adams.all.ge2,WUE.Adams.all.ge3,
+        WUE.Adams.all.ge4,WUE.Adams.all.ge5,WUE.Adams.all.ge6,
+        WUE.Adams.all.ge7,WUE.Adams.all.ge8,nobs=374)
+#8 is best
+
+WUE.Adams.all.ge8.red<-lmer(log10(WUEi)~(1|Species) + (1|Location) + (1|Growth_Habit), data = paired.dat)
+anova(WUE.Adams.all.ge8,WUE.Adams.all.ge8.red)
+#p=0.95
+
+summary(WUE.Adams.all.ge8)
+
+#d13C
+d13C.Adams.all.ge1<-lm(deltaC~N_fix, data = paired.d13C.dat)
+d13C.Adams.all.ge2<-lmer(deltaC~N_fix + (1|Location), data = paired.d13C.dat)
+d13C.Adams.all.ge3<-lmer(deltaC~N_fix + (1|Growth_Habit), data = paired.d13C.dat)
+d13C.Adams.all.ge4<-lmer(deltaC~N_fix + (1|Species), data = paired.d13C.dat)
+d13C.Adams.all.ge5<-lmer(deltaC~N_fix + (1|Location) + (1|Growth_Habit), data = paired.d13C.dat)
+d13C.Adams.all.ge6<-lmer(deltaC~N_fix + (1|Species) + (1|Location), data = paired.d13C.dat)
+d13C.Adams.all.ge7<-lmer(deltaC~N_fix + (1|Species) + (1|Growth_Habit), data = paired.d13C.dat)
+d13C.Adams.all.ge8<-lmer(deltaC~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = paired.d13C.dat)
+
+AICctab(d13C.Adams.all.ge1,d13C.Adams.all.ge2,d13C.Adams.all.ge3,
+        d13C.Adams.all.ge4,d13C.Adams.all.ge5,d13C.Adams.all.ge6,
+        d13C.Adams.all.ge7,d13C.Adams.all.ge8,nobs=457)
+#8 is best
+
+d13C.Adams.all.ge8.red<-lmer(deltaC~(1|Species) + (1|Location) + (1|Growth_Habit), data = paired.d13C.dat)
+anova(d13C.Adams.all.ge8,d13C.Adams.all.ge8.red)
+#p=0.02
+
+summary(d13C.Adams.all.ge8)
+
+##Woody plants in Adams et al. (2016) PNAS
+
+Adams.woody.ge.all<-paired.dat[paired.dat$Growth_Habit %in% c('Ev. Ang.','Dec. Ang.','Gymnosperm'),]
+Adams.woody.d13C.all<-paired.d13C.dat[paired.d13C.dat$Growth_Habit %in% c('Ev. Ang.','Dec. Ang.','Gymnosperm'),]
+
+#Asat
+Aa.Adams.woody.ge1<-lm(log10(Aarea)~N_fix, data = Adams.woody.ge.all)
+Aa.Adams.woody.ge2<-lmer(log10(Aarea)~N_fix + (1|Location), data = Adams.woody.ge.all)
+Aa.Adams.woody.ge3<-lmer(log10(Aarea)~N_fix + (1|Growth_Habit), data = Adams.woody.ge.all)
+Aa.Adams.woody.ge4<-lmer(log10(Aarea)~N_fix + (1|Species), data = Adams.woody.ge.all)
+Aa.Adams.woody.ge5<-lmer(log10(Aarea)~N_fix + (1|Location) + (1|Growth_Habit), data = Adams.woody.ge.all)
+Aa.Adams.woody.ge6<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Location), data = Adams.woody.ge.all)
+Aa.Adams.woody.ge7<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Growth_Habit), data = Adams.woody.ge.all)
+Aa.Adams.woody.ge8<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = Adams.woody.ge.all)
+
+AICctab(Aa.Adams.woody.ge1,Aa.Adams.woody.ge2,Aa.Adams.woody.ge3,
+        Aa.Adams.woody.ge4,Aa.Adams.woody.ge5,Aa.Adams.woody.ge6,
+        Aa.Adams.woody.ge7,Aa.Adams.woody.ge8,nobs=266)
+#8 is best
+
+Aa.Adams.woody.ge8.red<-lmer(log10(Aarea)~(1|Species) + (1|Location) + (1|Growth_Habit), data = Adams.woody.ge.all)
+anova(Aa.Adams.woody.ge8,Aa.Adams.woody.ge8.red)
+#p=0.12
+
+summary(Aa.Adams.woody.ge8)
+
+#gsw
+g.Adams.woody.ge1<-lm(log10(gsarea)~N_fix, data = Adams.woody.ge.all)
+g.Adams.woody.ge2<-lmer(log10(gsarea)~N_fix + (1|Location), data = Adams.woody.ge.all)
+g.Adams.woody.ge3<-lmer(log10(gsarea)~N_fix + (1|Growth_Habit), data = Adams.woody.ge.all)
+g.Adams.woody.ge4<-lmer(log10(gsarea)~N_fix + (1|Species), data = Adams.woody.ge.all)
+g.Adams.woody.ge5<-lmer(log10(gsarea)~N_fix + (1|Location) + (1|Growth_Habit), data = Adams.woody.ge.all)
+g.Adams.woody.ge6<-lmer(log10(gsarea)~N_fix + (1|Species) + (1|Location), data = Adams.woody.ge.all)
+g.Adams.woody.ge7<-lmer(log10(gsarea)~N_fix + (1|Species) + (1|Growth_Habit), data = Adams.woody.ge.all)
+g.Adams.woody.ge8<-lmer(log10(gsarea)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = Adams.woody.ge.all)
+
+AICctab(g.Adams.woody.ge1,g.Adams.woody.ge2,g.Adams.woody.ge3,
+        g.Adams.woody.ge4,g.Adams.woody.ge5,g.Adams.woody.ge6,
+        g.Adams.woody.ge7,g.Adams.woody.ge8,nobs=266)
+#6 is best
+
+g.Adams.woody.ge6.red<-lmer(log10(gsarea)~(1|Species) + (1|Location), data = Adams.woody.ge.all)
+anova(g.Adams.woody.ge6,g.Adams.woody.ge6.red)
+#p=0.41
+
+summary(g.Adams.woody.ge6)
+
+#WUEi
+WUE.Adams.woody.ge1<-lm(log10(WUEi)~N_fix, data = Adams.woody.ge.all)
+WUE.Adams.woody.ge2<-lmer(log10(WUEi)~N_fix + (1|Location), data = Adams.woody.ge.all)
+WUE.Adams.woody.ge3<-lmer(log10(WUEi)~N_fix + (1|Growth_Habit), data = Adams.woody.ge.all)
+WUE.Adams.woody.ge4<-lmer(log10(WUEi)~N_fix + (1|Species), data = Adams.woody.ge.all)
+WUE.Adams.woody.ge5<-lmer(log10(WUEi)~N_fix + (1|Location) + (1|Growth_Habit), data = Adams.woody.ge.all)
+WUE.Adams.woody.ge6<-lmer(log10(WUEi)~N_fix + (1|Species) + (1|Location), data = Adams.woody.ge.all)
+WUE.Adams.woody.ge7<-lmer(log10(WUEi)~N_fix + (1|Species) + (1|Growth_Habit), data = Adams.woody.ge.all)
+WUE.Adams.woody.ge8<-lmer(log10(WUEi)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = Adams.woody.ge.all)
+
+AICctab(WUE.Adams.woody.ge1,WUE.Adams.woody.ge2,WUE.Adams.woody.ge3,
+        WUE.Adams.woody.ge4,WUE.Adams.woody.ge5,WUE.Adams.woody.ge6,
+        WUE.Adams.woody.ge7,WUE.Adams.woody.ge8,nobs=266)
+#2 is best
+
+WUE.Adams.woody.ge2.red<-lmer(log10(WUEi)~(1|Location), data = Adams.woody.ge.all)
+anova(WUE.Adams.woody.ge2,WUE.Adams.woody.ge2.red)
+#p=0.73
+
+summary(WUE.Adams.woody.ge2)
+
+#d13C
+d13C.Adams.woody.ge1<-lm(deltaC~N_fix, data = Adams.woody.d13C.all)
+d13C.Adams.woody.ge2<-lmer(deltaC~N_fix + (1|Location), data = Adams.woody.d13C.all)
+d13C.Adams.woody.ge3<-lmer(deltaC~N_fix + (1|Growth_Habit), data = Adams.woody.d13C.all)
+d13C.Adams.woody.ge4<-lmer(deltaC~N_fix + (1|Species), data = Adams.woody.d13C.all)
+d13C.Adams.woody.ge5<-lmer(deltaC~N_fix + (1|Location) + (1|Growth_Habit), data = Adams.woody.d13C.all)
+d13C.Adams.woody.ge6<-lmer(deltaC~N_fix + (1|Species) + (1|Location), data = Adams.woody.d13C.all)
+d13C.Adams.woody.ge7<-lmer(deltaC~N_fix + (1|Species) + (1|Growth_Habit), data = Adams.woody.d13C.all)
+d13C.Adams.woody.ge8<-lmer(deltaC~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = Adams.woody.d13C.all)
+
+AICctab(d13C.Adams.woody.ge1,d13C.Adams.woody.ge2,d13C.Adams.woody.ge3,
+        d13C.Adams.woody.ge4,d13C.Adams.woody.ge5,d13C.Adams.woody.ge6,
+        d13C.Adams.woody.ge7,d13C.Adams.woody.ge8,nobs=245)
+#6 is best
+
+d13C.Adams.woody.ge6.red<-lmer(deltaC~(1|Species) + (1|Location), data = Adams.woody.d13C.all)
+anova(d13C.Adams.woody.ge6,d13C.Adams.woody.ge6.red)
+#p<0.001
+
+summary(d13C.Adams.woody.ge6)
+
+##Non-woody plants in Adams et al. (2016) PNAS
+
+Adams.herb.ge.all<-paired.dat[paired.dat$Growth_Habit %in% c('Forb','Fern','Graminoid'),]
+Adams.herb.d13C.all<-paired.d13C.dat[paired.d13C.dat$Growth_Habit %in% c('Forb','Fern','Graminoid'),]
+
+#Asat
+Aa.Adams.herb.ge1<-lm(log10(Aarea)~N_fix, data = Adams.herb.ge.all)
+Aa.Adams.herb.ge2<-lmer(log10(Aarea)~N_fix + (1|Location), data = Adams.herb.ge.all)
+Aa.Adams.herb.ge3<-lmer(log10(Aarea)~N_fix + (1|Growth_Habit), data = Adams.herb.ge.all)
+Aa.Adams.herb.ge4<-lmer(log10(Aarea)~N_fix + (1|Species), data = Adams.herb.ge.all)
+Aa.Adams.herb.ge5<-lmer(log10(Aarea)~N_fix + (1|Location) + (1|Growth_Habit), data = Adams.herb.ge.all)
+Aa.Adams.herb.ge6<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Location), data = Adams.herb.ge.all)
+Aa.Adams.herb.ge7<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Growth_Habit), data = Adams.herb.ge.all)
+Aa.Adams.herb.ge8<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = Adams.herb.ge.all)
+
+AICctab(Aa.Adams.herb.ge1,Aa.Adams.herb.ge2,Aa.Adams.herb.ge3,
+        Aa.Adams.herb.ge4,Aa.Adams.herb.ge5,Aa.Adams.herb.ge6,
+        Aa.Adams.herb.ge7,Aa.Adams.herb.ge8,nobs=108)
+#6 is best
+
+Aa.Adams.herb.ge6.red<-lmer(log10(Aarea)~(1|Species) + (1|Location), data = Adams.herb.ge.all)
+anova(Aa.Adams.herb.ge6,Aa.Adams.herb.ge6.red)
+#p=0.04
+
+summary(Aa.Adams.herb.ge6)
+
+#gsw
+g.Adams.herb.ge1<-lm(log10(gsarea)~N_fix, data = Adams.herb.ge.all)
+g.Adams.herb.ge2<-lmer(log10(gsarea)~N_fix + (1|Location), data = Adams.herb.ge.all)
+g.Adams.herb.ge3<-lmer(log10(gsarea)~N_fix + (1|Growth_Habit), data = Adams.herb.ge.all)
+g.Adams.herb.ge4<-lmer(log10(gsarea)~N_fix + (1|Species), data = Adams.herb.ge.all)
+g.Adams.herb.ge5<-lmer(log10(gsarea)~N_fix + (1|Location) + (1|Growth_Habit), data = Adams.herb.ge.all)
+g.Adams.herb.ge6<-lmer(log10(gsarea)~N_fix + (1|Species) + (1|Location), data = Adams.herb.ge.all)
+g.Adams.herb.ge7<-lmer(log10(gsarea)~N_fix + (1|Species) + (1|Growth_Habit), data = Adams.herb.ge.all)
+g.Adams.herb.ge8<-lmer(log10(gsarea)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = Adams.herb.ge.all)
+
+AICctab(g.Adams.herb.ge1,g.Adams.herb.ge2,g.Adams.herb.ge3,
+        g.Adams.herb.ge4,g.Adams.herb.ge5,g.Adams.herb.ge6,
+        g.Adams.herb.ge7,g.Adams.herb.ge8,nobs=108)
+#1 is best
+
+summary(g.Adams.herb.ge1)
+#p=0.03
+
+#WUEi
+WUE.Adams.herb.ge1<-lm(log10(WUEi)~N_fix, data = Adams.herb.ge.all)
+WUE.Adams.herb.ge2<-lmer(log10(WUEi)~N_fix + (1|Location), data = Adams.herb.ge.all)
+WUE.Adams.herb.ge3<-lmer(log10(WUEi)~N_fix + (1|Growth_Habit), data = Adams.herb.ge.all)
+WUE.Adams.herb.ge4<-lmer(log10(WUEi)~N_fix + (1|Species), data = Adams.herb.ge.all)
+WUE.Adams.herb.ge5<-lmer(log10(WUEi)~N_fix + (1|Location) + (1|Growth_Habit), data = Adams.herb.ge.all)
+WUE.Adams.herb.ge6<-lmer(log10(WUEi)~N_fix + (1|Species) + (1|Location), data = Adams.herb.ge.all)
+WUE.Adams.herb.ge7<-lmer(log10(WUEi)~N_fix + (1|Species) + (1|Growth_Habit), data = Adams.herb.ge.all)
+WUE.Adams.herb.ge8<-lmer(log10(WUEi)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = Adams.herb.ge.all)
+
+AICctab(WUE.Adams.herb.ge1,WUE.Adams.herb.ge2,WUE.Adams.herb.ge3,
+        WUE.Adams.herb.ge4,WUE.Adams.herb.ge5,WUE.Adams.herb.ge6,
+        WUE.Adams.herb.ge7,WUE.Adams.herb.ge8,nobs=108)
+#1 is best
+
+summary(WUE.Adams.herb.ge1)
+#p=0.50
+
+#d13C
+d13C.Adams.herb.ge1<-lm(deltaC~N_fix, data = Adams.herb.d13C.all)
+d13C.Adams.herb.ge2<-lmer(deltaC~N_fix + (1|Location), data = Adams.herb.d13C.all)
+d13C.Adams.herb.ge3<-lmer(deltaC~N_fix + (1|Growth_Habit), data = Adams.herb.d13C.all)
+d13C.Adams.herb.ge4<-lmer(deltaC~N_fix + (1|Species), data = Adams.herb.d13C.all)
+d13C.Adams.herb.ge5<-lmer(deltaC~N_fix + (1|Location) + (1|Growth_Habit), data = Adams.herb.d13C.all)
+d13C.Adams.herb.ge6<-lmer(deltaC~N_fix + (1|Species) + (1|Location), data = Adams.herb.d13C.all)
+d13C.Adams.herb.ge7<-lmer(deltaC~N_fix + (1|Species) + (1|Growth_Habit), data = Adams.herb.d13C.all)
+d13C.Adams.herb.ge8<-lmer(deltaC~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = Adams.herb.d13C.all)
+
+AICctab(d13C.Adams.herb.ge1,d13C.Adams.herb.ge2,d13C.Adams.herb.ge3,
+        d13C.Adams.herb.ge4,d13C.Adams.herb.ge5,d13C.Adams.herb.ge6,
+        d13C.Adams.herb.ge7,d13C.Adams.herb.ge8,nobs=212)
+#8 is best
+
+d13C.Adams.herb.ge8.red<-lmer(deltaC~(1|Species) + (1|Location) + (1|Growth_Habit), data = Adams.herb.d13C.all)
+anova(d13C.Adams.herb.ge8,d13C.Adams.herb.ge8.red)
+#p=0.49
+
+summary(d13C.Adams.herb.ge8)
+
 
 #######################################################################################################
 ###Figures
@@ -4764,8 +5096,10 @@ layout.show(nf)
 par(oma=c(2,2,2,2))
 par(mar=c(4,4,1,0))
 
+emmeans(Aa.all.ge8, list(pairwise ~ N_fix), adjust = "tukey")
+
 boxplot(log10(Aarea)~N_fix, data=all.dat.ge,yaxt="n",xaxt="n",ylim=c(0,log10(40)),border="black",col="white",las=1,
-        ylab=NA,xlab=NA,main=NA,cex.lab=1.5,cex.main=1.5)
+        ylab=NA,xlab=NA,main=NA,cex.lab=1.5,cex.main=1.5,outline=F)
 axis(2,at=c(log10(1),log10(2),log10(3),log10(4),log10(5),log10(10),log10(20),log10(30),log10(40)),labels=c(1,2,3,4,5,10,20,30,40),las=1)
 axis(2,at=c(log10(seq(1, 40, length.out = 40))),labels=NA,las=1)
 axis(1,at=c(1,2),labels=c("N fixers","Non-fixers"),cex.axis=1.5)
@@ -4773,15 +5107,17 @@ stripchart(log10(Aarea)~N_fix, vertical = TRUE, data = exp.df.ge,
            method = "jitter", add = TRUE, pch=16,cex=1.4,col="dodgerblue1")
 stripchart(log10(Aarea)~N_fix, vertical = TRUE, data = Adams.woody.ge, 
            method = "jitter", add = TRUE, pch=1,cex=1.4,col="dodgerblue1")
-arrows(1,summary(Aa.all.ge8)$coefficients[1,1]-0.068,
-       1,summary(Aa.all.ge8)$coefficients[1,1]+0.068,angle=90,length=0.1,code=3,lwd=2)
-arrows(2,summary(Aa.all.ge8)$coefficients[1,1]+summary(Aa.all.ge8)$coefficients[2,1]-0.0617,
-       2,summary(Aa.all.ge8)$coefficients[1,1]+summary(Aa.all.ge8)$coefficients[2,1]+0.0617,angle=90,length=0.1,code=3,lwd=2)
+arrows(1,summary(Aa.all.ge8)$coefficients[1,1]-0.0588,
+       1,summary(Aa.all.ge8)$coefficients[1,1]+0.0588,angle=90,length=0.1,code=3,lwd=2)
+arrows(2,summary(Aa.all.ge8)$coefficients[1,1]+summary(Aa.all.ge8)$coefficients[2,1]-0.0551,
+       2,summary(Aa.all.ge8)$coefficients[1,1]+summary(Aa.all.ge8)$coefficients[2,1]+0.0551,angle=90,length=0.1,code=3,lwd=2)
 points(1,summary(Aa.all.ge8)$coefficients[1,1],pch=1,cex=2.5,lwd=2)
 points(2,summary(Aa.all.ge8)$coefficients[1,1]+summary(Aa.all.ge8)$coefficients[2,1],pch=1,cex=2.5,lwd=2)
-legend("bottomright",legend="p = 0.09",bty="n",cex=1.3)
+legend("bottomright",legend="p = 0.05",bty="n",cex=1.3)
 mtext(expression('A'[sat]*' ('*mu*'mol m'^-2*' s'^-1*')'),side=2,line=3,cex=1.3)
 mtext(text="a",side=3,cex=1.5,adj=0)
+
+emmeans(g.all.ge6, list(pairwise ~ N_fix), adjust = "tukey")
 
 boxplot(log10(g)~N_fix, data=all.dat.ge,yaxt="n",xaxt="n",ylim=c(log10(0.01),log10(10)),border="black",col="white",las=1,
         ylab=NA,xlab=NA,main=NA,cex.lab=1.5,cex.main=1.5,outline=F)
@@ -4794,15 +5130,17 @@ stripchart(log10(g)~N_fix, vertical = TRUE, data = exp.df.ge,
            method = "jitter", add = TRUE, pch=16,cex=1.4,col="dodgerblue1")
 stripchart(log10(g)~N_fix, vertical = TRUE, data = Adams.woody.ge, 
            method = "jitter", add = TRUE, pch=1,cex=1.4,col="dodgerblue1")
-arrows(1,summary(g.all.ge1)$coefficients[1,1]-0.0837,
-       1,summary(g.all.ge1)$coefficients[1,1]+0.0837,angle=90,length=0.1,code=3,lwd=2)
-arrows(2,summary(g.all.ge1)$coefficients[1,1]+summary(g.all.ge1)$coefficients[2,1]-0.074,
-       2,summary(g.all.ge1)$coefficients[1,1]+summary(g.all.ge1)$coefficients[2,1]+0.074,angle=90,length=0.1,code=3,lwd=2)
-points(1,summary(g.all.ge1)$coefficients[1,1],pch=1,cex=2.5,lwd=2)
-points(2,summary(g.all.ge1)$coefficients[1,1]+summary(g.all.ge1)$coefficients[2,1],pch=1,cex=2.5,lwd=2)
-legend("bottomright",legend="p = 0.48",bty="n",cex=1.3)
+arrows(1,summary(g.all.ge6)$coefficients[1,1]-0.0649,
+       1,summary(g.all.ge6)$coefficients[1,1]+0.0649,angle=90,length=0.1,code=3,lwd=2)
+arrows(2,summary(g.all.ge6)$coefficients[1,1]+summary(g.all.ge6)$coefficients[2,1]-0.0595,
+       2,summary(g.all.ge6)$coefficients[1,1]+summary(g.all.ge6)$coefficients[2,1]+0.0595,angle=90,length=0.1,code=3,lwd=2)
+points(1,summary(g.all.ge6)$coefficients[1,1],pch=1,cex=2.5,lwd=2)
+points(2,summary(g.all.ge6)$coefficients[1,1]+summary(g.all.ge6)$coefficients[2,1],pch=1,cex=2.5,lwd=2)
+legend("bottomright",legend="p = 0.33",bty="n",cex=1.3)
 mtext(expression('g'[sw]*' (mol m'^-2*' s'^-1*')'),side=2,line=3,cex=1.3)
 mtext(text="b",side=3,cex=1.5,adj=0)
+
+emmeans(WUEi.all.ge2, list(pairwise ~ N_fix), adjust = "tukey")
 
 boxplot(log10(WUEi)~N_fix, data=all.dat.ge,yaxt="n",xaxt="n",ylim=c(log10(1),log10(1000)),border="black",col="white",las=1,
         ylab=NA,xlab=NA,main=NA,cex.lab=1.5,cex.main=1.5,outline=F)
@@ -4815,16 +5153,17 @@ stripchart(log10(WUEi)~N_fix, vertical = TRUE, data = exp.df.ge,
            method = "jitter", add = TRUE, pch=16,cex=1.4,col="dodgerblue1")
 stripchart(log10(WUEi)~N_fix, vertical = TRUE, data = Adams.woody.ge, 
            method = "jitter", add = TRUE, pch=1,cex=1.4,col="dodgerblue1")
-arrows(1,summary(WUEi.all.ge1)$coefficients[1,1]-0.0665,
-       1,summary(WUEi.all.ge1)$coefficients[1,1]+0.0665,angle=90,length=0.1,code=3,lwd=2)
-arrows(2,summary(WUEi.all.ge1)$coefficients[1,1]+summary(WUEi.all.ge1)$coefficients[2,1]-0.0625,
-       2,summary(WUEi.all.ge1)$coefficients[1,1]+summary(WUEi.all.ge1)$coefficients[2,1]+0.0625,angle=90,length=0.1,code=3,lwd=2)
-points(1,summary(WUEi.all.ge1)$coefficients[1,1],pch=1,cex=2.5,lwd=2)
-points(2,summary(WUEi.all.ge1)$coefficients[1,1]+summary(WUEi.all.ge1)$coefficients[2,1],pch=1,cex=2.5,lwd=2)
-legend("bottomright",legend="p = 0.54",bty="n",cex=1.3)
+arrows(1,summary(WUEi.all.ge2)$coefficients[1,1]-0.0561,
+       1,summary(WUEi.all.ge2)$coefficients[1,1]+0.0561,angle=90,length=0.1,code=3,lwd=2)
+arrows(2,summary(WUEi.all.ge2)$coefficients[1,1]+summary(WUEi.all.ge2)$coefficients[2,1]-0.0541,
+       2,summary(WUEi.all.ge2)$coefficients[1,1]+summary(WUEi.all.ge2)$coefficients[2,1]+0.0541,angle=90,length=0.1,code=3,lwd=2)
+points(1,summary(WUEi.all.ge2)$coefficients[1,1],pch=1,cex=2.5,lwd=2)
+points(2,summary(WUEi.all.ge2)$coefficients[1,1]+summary(WUEi.all.ge2)$coefficients[2,1],pch=1,cex=2.5,lwd=2)
+legend("bottomright",legend="p = 0.73",bty="n",cex=1.3)
 mtext(expression(WUE[i]*' ('*mu*'mol mol'^-1*')'),side=2,line=3,cex=1.3)
 mtext(text="c",side=3,cex=1.5,adj=0)
 
+emmeans(d13C.all.d13C6, list(pairwise ~ N_fix), adjust = "tukey")
 
 boxplot(d13C~N_fix, data=all.dat.d13C,xaxt="n",ylim=c(-40,-20),border="black",col="white",las=1,
         ylab=NA,xlab=NA,main=NA,cex.lab=1.5,cex.main=1.5,outline=F)
@@ -4833,12 +5172,12 @@ stripchart(d13C~N_fix, vertical = TRUE, data = exp.df.d13C,
            method = "jitter", add = TRUE, pch=16,cex=1.4,col="dodgerblue1")
 stripchart(d13C~N_fix, vertical = TRUE, data = Adams.woody.d13C, 
            method = "jitter", add = TRUE, pch=1,cex=1.4,col="dodgerblue1")
-arrows(1,summary(d13C.all.d13C1)$coefficients[1,1]-0.306,
-       1,summary(d13C.all.d13C1)$coefficients[1,1]+0.306,angle=90,length=0.1,code=3,lwd=2)
-arrows(2,summary(d13C.all.d13C1)$coefficients[1,1]+summary(d13C.all.d13C1)$coefficients[2,1]-0.282,
-       2,summary(d13C.all.d13C1)$coefficients[1,1]+summary(d13C.all.d13C1)$coefficients[2,1]+0.282,angle=90,length=0.1,code=3,lwd=2)
-points(1,summary(d13C.all.d13C1)$coefficients[1,1],pch=1,cex=2.5,lwd=2)
-points(2,summary(d13C.all.d13C1)$coefficients[1,1]+summary(d13C.all.d13C1)$coefficients[2,1],pch=1,cex=2.5,lwd=2)
+arrows(1,summary(d13C.all.d13C6)$coefficients[1,1]-0.308,
+       1,summary(d13C.all.d13C6)$coefficients[1,1]+0.308,angle=90,length=0.1,code=3,lwd=2)
+arrows(2,summary(d13C.all.d13C6)$coefficients[1,1]+summary(d13C.all.d13C6)$coefficients[2,1]-0.251,
+       2,summary(d13C.all.d13C6)$coefficients[1,1]+summary(d13C.all.d13C6)$coefficients[2,1]+0.251,angle=90,length=0.1,code=3,lwd=2)
+points(1,summary(d13C.all.d13C6)$coefficients[1,1],pch=1,cex=2.5,lwd=2)
+points(2,summary(d13C.all.d13C6)$coefficients[1,1]+summary(d13C.all.d13C6)$coefficients[2,1],pch=1,cex=2.5,lwd=2)
 legend("bottomright",legend="p < 0.001",bty="n",cex=1.3)
 mtext(expression(paste(delta^{13}, "C (\u2030)")),side=2,line=3,cex=1.3)
 mtext(text="d",side=3,cex=1.5,adj=0)
@@ -5048,3 +5387,96 @@ legend(log10(2.5),log10(0.01),c(expression('Slope = 0.82 ('-'0.40, 1.98)'),
                                 expression('R'[m]^2*' = 0.03'),
                                 expression('R'[c]^2*' = 0.53')),bty="n",
        y.intersp = 0.8,cex=0.9,x.intersp = 0.5)
+
+
+#######################################################################################################
+
+#Supplementary Figure 15 (8x8 inches)
+
+par(pty="s")
+nf<-layout(matrix(c(1,2,3,4),2,2,byrow=T),widths=c(2,2,2,2),heights=c(2,2,2,2),T)
+layout.show(nf)
+par(oma=c(2,2,2,2))
+par(mar=c(4,4,1,0))
+
+Aa.f.sp3<-lmer(log10(A_area)~Fixer + (1|Species), data = dat.ge.LN)
+emmeans(Aa.f.sp3, list(pairwise ~ Fixer), adjust = "tukey")
+
+boxplot(log10(A_area)~Nonfixer, data=dat.ge.LN,yaxt="n",xaxt="n",ylim=c(0,log10(40)),border="black",col="white",las=1,
+        ylab=NA,xlab=NA,main=NA,cex.lab=1.5,cex.main=1.5,outline=F)
+axis(2,at=c(log10(1),log10(2),log10(3),log10(4),log10(5),log10(10),log10(20),log10(30),log10(40)),labels=c(1,2,3,4,5,10,20,30,40),las=1)
+axis(2,at=c(log10(seq(1, 40, length.out = 40))),labels=NA,las=1)
+axis(1,at=c(1,2),labels=c("N fixers","Non-fixers"),cex.axis=1.5)
+# stripchart(log10(Aarea)~N_fix, vertical = TRUE, data = exp.df.ge,
+#            method = "jitter", add = TRUE, pch=16,cex=1.4,col="dodgerblue1")
+stripchart(log10(A_area)~Nonfixer, vertical = TRUE, data = dat.ge.LN,
+           method = "jitter", add = TRUE, pch=1,cex=1.4,col="dodgerblue1")
+arrows(1,summary(Aa.f.sp3)$coefficients[1,1]+summary(Aa.f.sp3)$coefficients[2,1]-0.0376,
+       1,summary(Aa.f.sp3)$coefficients[1,1]+summary(Aa.f.sp3)$coefficients[2,1]+0.0376,angle=90,length=0.1,code=3,lwd=2)
+arrows(2,summary(Aa.f.sp3)$coefficients[1,1]-0.0465,
+       2,summary(Aa.f.sp3)$coefficients[1,1]+0.0465,angle=90,length=0.1,code=3,lwd=2)
+points(1,summary(Aa.f.sp3)$coefficients[1,1]+summary(Aa.f.sp3)$coefficients[2,1],pch=1,cex=2.5,lwd=2)
+points(2,summary(Aa.f.sp3)$coefficients[1,1],pch=1,cex=2.5,lwd=2)
+legend("bottomright",legend="p = 0.10",bty="n",cex=1.3)
+mtext(expression('A'[sat]*' ('*mu*'mol m'^-2*' s'^-1*')'),side=2,line=3,cex=1.3)
+mtext(text="a",side=3,cex=1.5,adj=0)
+
+Aa.Adams.all.ge8<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = paired.dat)
+emmeans(Aa.Adams.all.ge8, list(pairwise ~ N_fix), adjust = "tukey")
+
+boxplot(log10(Aarea)~N_fix, data=paired.dat,yaxt="n",xaxt="n",ylim=c(0,log10(40)),border="black",col="white",las=1,
+        ylab=NA,xlab=NA,main=NA,cex.lab=1.5,cex.main=1.5,outline=F)
+axis(2,at=c(log10(1),log10(2),log10(3),log10(4),log10(5),log10(10),log10(20),log10(30),log10(40)),labels=c(1,2,3,4,5,10,20,30,40),las=1)
+axis(2,at=c(log10(seq(1, 40, length.out = 40))),labels=NA,las=1)
+axis(1,at=c(1,2),labels=c("N fixers","Non-fixers"),cex.axis=1.5)
+stripchart(log10(Aarea)~N_fix, vertical = TRUE, data = paired.dat, 
+           method = "jitter", add = TRUE, pch=1,cex=1.4,col="dodgerblue1")
+arrows(1,summary(Aa.Adams.all.ge8)$coefficients[1,1]-0.0551,
+       1,summary(Aa.Adams.all.ge8)$coefficients[1,1]+0.0551,angle=90,length=0.1,code=3,lwd=2)
+arrows(2,summary(Aa.Adams.all.ge8)$coefficients[1,1]+summary(Aa.Adams.all.ge8)$coefficients[2,1]-0.0511,
+       2,summary(Aa.Adams.all.ge8)$coefficients[1,1]+summary(Aa.Adams.all.ge8)$coefficients[2,1]+0.0511,angle=90,length=0.1,code=3,lwd=2)
+points(1,summary(Aa.Adams.all.ge8)$coefficients[1,1],pch=1,cex=2.5,lwd=2)
+points(2,summary(Aa.Adams.all.ge8)$coefficients[1,1]+summary(Aa.Adams.all.ge8)$coefficients[2,1],pch=1,cex=2.5,lwd=2)
+legend("bottomright",legend="p = 0.004",bty="n",cex=1.3)
+mtext(expression('A'[sat]*' ('*mu*'mol m'^-2*' s'^-1*')'),side=2,line=3,cex=1.3)
+mtext(text="b",side=3,cex=1.5,adj=0)
+
+Aa.Adams.woody.ge8<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Location) + (1|Growth_Habit), data = Adams.woody.ge.all)
+emmeans(Aa.Adams.woody.ge8, list(pairwise ~ N_fix), adjust = "tukey")
+
+boxplot(log10(Aarea)~N_fix, data=Adams.woody.ge.all,yaxt="n",xaxt="n",ylim=c(0,log10(40)),border="black",col="white",las=1,
+        ylab=NA,xlab=NA,main=NA,cex.lab=1.5,cex.main=1.5,outline=F)
+axis(2,at=c(log10(1),log10(2),log10(3),log10(4),log10(5),log10(10),log10(20),log10(30),log10(40)),labels=c(1,2,3,4,5,10,20,30,40),las=1)
+axis(2,at=c(log10(seq(1, 40, length.out = 40))),labels=NA,las=1)
+axis(1,at=c(1,2),labels=c("N fixers","Non-fixers"),cex.axis=1.5)
+stripchart(log10(Aarea)~N_fix, vertical = TRUE, data = Adams.woody.ge.all, 
+           method = "jitter", add = TRUE, pch=1,cex=1.4,col="dodgerblue1")
+arrows(1,summary(Aa.Adams.woody.ge8)$coefficients[1,1]-0.0611,
+       1,summary(Aa.Adams.woody.ge8)$coefficients[1,1]+0.0611,angle=90,length=0.1,code=3,lwd=2)
+arrows(2,summary(Aa.Adams.woody.ge8)$coefficients[1,1]+summary(Aa.Adams.woody.ge8)$coefficients[2,1]-0.0567,
+       2,summary(Aa.Adams.woody.ge8)$coefficients[1,1]+summary(Aa.Adams.woody.ge8)$coefficients[2,1]+0.0567,angle=90,length=0.1,code=3,lwd=2)
+points(1,summary(Aa.Adams.woody.ge8)$coefficients[1,1],pch=1,cex=2.5,lwd=2)
+points(2,summary(Aa.Adams.woody.ge8)$coefficients[1,1]+summary(Aa.Adams.woody.ge8)$coefficients[2,1],pch=1,cex=2.5,lwd=2)
+legend("bottomright",legend="p = 0.12",bty="n",cex=1.3)
+mtext(expression('A'[sat]*' ('*mu*'mol m'^-2*' s'^-1*')'),side=2,line=3,cex=1.3)
+mtext(text="c",side=3,cex=1.5,adj=0)
+
+Aa.Adams.herb.ge6<-lmer(log10(Aarea)~N_fix + (1|Species) + (1|Location), data = Adams.herb.ge.all)
+emmeans(Aa.Adams.herb.ge6, list(pairwise ~ N_fix), adjust = "tukey")
+
+boxplot(log10(Aarea)~N_fix, data=Adams.herb.ge.all,yaxt="n",xaxt="n",ylim=c(0,log10(40)),border="black",col="white",las=1,
+        ylab=NA,xlab=NA,main=NA,cex.lab=1.5,cex.main=1.5,outline=F)
+axis(2,at=c(log10(1),log10(2),log10(3),log10(4),log10(5),log10(10),log10(20),log10(30),log10(40)),labels=c(1,2,3,4,5,10,20,30,40),las=1)
+axis(2,at=c(log10(seq(1, 40, length.out = 40))),labels=NA,las=1)
+axis(1,at=c(1,2),labels=c("N fixers","Non-fixers"),cex.axis=1.5)
+stripchart(log10(Aarea)~N_fix, vertical = TRUE, data = Adams.herb.ge.all, 
+           method = "jitter", add = TRUE, pch=1,cex=1.4,col="dodgerblue1")
+arrows(1,summary(Aa.Adams.herb.ge8)$coefficients[1,1]-0.0681,
+       1,summary(Aa.Adams.herb.ge8)$coefficients[1,1]+0.0681,angle=90,length=0.1,code=3,lwd=2)
+arrows(2,summary(Aa.Adams.herb.ge8)$coefficients[1,1]+summary(Aa.Adams.herb.ge8)$coefficients[2,1]-0.0534,
+       2,summary(Aa.Adams.herb.ge8)$coefficients[1,1]+summary(Aa.Adams.herb.ge8)$coefficients[2,1]+0.0534,angle=90,length=0.1,code=3,lwd=2)
+points(1,summary(Aa.Adams.herb.ge8)$coefficients[1,1],pch=1,cex=2.5,lwd=2)
+points(2,summary(Aa.Adams.herb.ge8)$coefficients[1,1]+summary(Aa.Adams.herb.ge8)$coefficients[2,1],pch=1,cex=2.5,lwd=2)
+legend("bottomright",legend="p = 0.04",bty="n",cex=1.3)
+mtext(expression('A'[sat]*' ('*mu*'mol m'^-2*' s'^-1*')'),side=2,line=3,cex=1.3)
+mtext(text="d",side=3,cex=1.5,adj=0)
