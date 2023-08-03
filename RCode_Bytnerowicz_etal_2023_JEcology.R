@@ -1634,9 +1634,9 @@ Nm.LMA.all.lmer13.a2<-lmer(log10(X.N_mass)~log10(LMA)*Fixer + log10(LMA)*NLIM_Al
 Nm.LMA.all.lmer14.a2<-lmer(log10(X.N_mass)~log10(LMA)*Fixer + log10(LMA)*NLIM_Alt2 + (1|Species), data = dat)
 Nm.LMA.all.lmer15.a2<-lm(log10(X.N_mass)~log10(LMA)*Fixer + log10(LMA)*NLIM_Alt2, data = dat)
 
-AICctab(Nm.LMA.all.lmer1.a2,Nm.LMA.all.lmer2.a2,Nm.LMA.all.lmer3.a2,Nm.LMA.all.lmer4.a2,Nm.LMA.all.lmer14.a2,
+AICctab(Nm.LMA.all.lmer1.a2,Nm.LMA.all.lmer2.a2,Nm.LMA.all.lmer3.a2,Nm.LMA.all.lmer4.a2,Nm.LMA.all.lmer5.a2,
         Nm.LMA.all.lmer6.a2,Nm.LMA.all.lmer7.a2,Nm.LMA.all.lmer8.a2,Nm.LMA.all.lmer9.a2,Nm.LMA.all.lmer10.a2,
-        Nm.LMA.all.lmer11.a2,Nm.LMA.all.lmer12.a2,Nm.LMA.all.lmer13.a2,Nm.LMA.all.lmer14.a2,Nm.LMA.all.lmer114.a2,nobs=343)
+        Nm.LMA.all.lmer11.a2,Nm.LMA.all.lmer12.a2,Nm.LMA.all.lmer13.a2,Nm.LMA.all.lmer14.a2,Nm.LMA.all.lmer15.a2,nobs=343)
 
 
 #Leaf N per mass~LMA
