@@ -1826,9 +1826,9 @@ d13C.Na.all.lmer13.a2<-lmer(d13C~log10(gN_m.2)*Fixer + log10(gN_m.2)*NLIM_Alt2 +
 d13C.Na.all.lmer14.a2<-lmer(d13C~log10(gN_m.2)*Fixer + log10(gN_m.2)*NLIM_Alt2 + (1|Species), data = dat)
 d13C.Na.all.lmer15.a2<-lm(d13C~log10(gN_m.2)*Fixer + log10(gN_m.2)*NLIM_Alt2, data = dat)
 
-AICctab(d13C.Na.all.lmer1.a2,d13C.Na.all.lmer2.a2,d13C.Na.all.lmer3.a2,d13C.Na.all.lmer4.a2,d13C.Na.all.lmer14.a2,
+AICctab(d13C.Na.all.lmer1.a2,d13C.Na.all.lmer2.a2,d13C.Na.all.lmer3.a2,d13C.Na.all.lmer4.a2,d13C.Na.all.lmer5.a2,
         d13C.Na.all.lmer6.a2,d13C.Na.all.lmer7.a2,d13C.Na.all.lmer8.a2,d13C.Na.all.lmer9.a2,d13C.Na.all.lmer10.a2,
-        d13C.Na.all.lmer11.a2,d13C.Na.all.lmer12.a2,d13C.Na.all.lmer13.a2,d13C.Na.all.lmer14.a2,d13C.Na.all.lmer114.a2,nobs=343)
+        d13C.Na.all.lmer11.a2,d13C.Na.all.lmer12.a2,d13C.Na.all.lmer13.a2,d13C.Na.all.lmer14.a2,d13C.Na.all.lmer15.a2,nobs=343)
 
 d13C.Na.all.lmer1.a2<-lmer(d13C~log10(gN_m.2)*Fixer + log10(gN_m.2)*NLIM_Alt2 + (1|Species/Meas) + (1|Site), data = dat)
 confint(d13C.Na.all.lmer1.a2)
