@@ -3851,7 +3851,7 @@ par(mar=c(4,5,1,0))
 par(pty="s")
 
 plot(log10(gN_m.2)~log10(LMA),dat=dat,xaxt="n",yaxt="n",xlim=c(log10(20),log10(500)),ylim=c(log10(0.2),log10(7)),
-     xlab=expression('LMA (g m'^-2*')'), ylab=expression('Leaf N (gN m'^-2*')'),cex.lab=1.5,col="white")
+     xlab=expression('LMA (g m'^-2*')'), ylab=expression('Leaf N (g N m'^-2*')'),cex.lab=1.5,col="white")
 points(log10(gN_m.2)~log10(LMA),dat=BENI.NSAT,col="green3",pch=1)
 points(log10(gN_m.2)~log10(LMA),dat=BENI.NLIM,col="green3",pch=2)
 points(log10(gN_m.2)~log10(LMA),dat=DOVI,col="darkgoldenrod1",pch=1)
@@ -4135,7 +4135,7 @@ par(mar=c(4,5,1,0))
 par(pty="s")
 
 plot(log10(gN_m.2)~log10(LMA),dat=dat,xaxt="n",yaxt="n",xlim=c(log10(20),log10(500)),ylim=c(log10(0.15),log10(7)),
-     xlab=expression('LMA (g m'^-2*')'), ylab=expression('Leaf N (gN m'^-2*')'),cex.lab=1.5,col="white")
+     xlab=expression('LMA (g m'^-2*')'), ylab=expression('Leaf N (g N m'^-2*')'),cex.lab=1.5,col="white")
 points(log10(gN_m.2)~log10(LMA),dat=BENI.NSAT,col="green3",pch=1)
 points(log10(gN_m.2)~log10(LMA),dat=BENI.NLIM,col="green3",pch=2)
 points(log10(gN_m.2)~log10(LMA),dat=DOVI.NSAT,col="darkgoldenrod1",pch=1)
