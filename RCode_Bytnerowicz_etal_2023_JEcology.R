@@ -1426,9 +1426,9 @@ confint(Aa.Na.all.lmer7d.a1) #NS
 summary(Aa.Na.all.lmer7c.a1) #Int: 1.04 (0.95, 1.13); NLIM: 1.13; dif: 0.09 (0.01, 0.18); slope: 0.47 [0.25, 0.67]
 r.squaredGLMM(Aa.Na.all.lmer7c.a1) #R2m=0.19, R2c=0.66
 
-Aa.Na.slopemu<-summary(Aa.Na.all.lmer7c.a1)$coefficients[[2,1]]
-Aa.Na.intmu<-summary(Aa.Na.all.lmer7c.a1)$coefficients[[1,1]]
-Aa.Na.NLIM.intmu<-summary(Aa.Na.all.lmer7c.a1)$coefficients[[1,1]]+summary(Aa.Na.all.lmer7c.a1)$coefficients[[3,1]]
+Aa.Na.slopemu.a1<-summary(Aa.Na.all.lmer7c.a1)$coefficients[[2,1]]
+Aa.Na.intmu.a1<-summary(Aa.Na.all.lmer7c.a1)$coefficients[[1,1]]
+Aa.Na.NLIM.intmu.a1<-summary(Aa.Na.all.lmer7c.a1)$coefficients[[1,1]]+summary(Aa.Na.all.lmer7c.a1)$coefficients[[3,1]]
 
 #gsw~leaf N per area
 g.Na.all.lmer1.a1<-lmer(log10(g)~log10(gN_m.2)*Fixer + log10(gN_m.2)*NLIM_Alt1 + (1|Species/Meas) + (1|Site), data = dat.ge)
@@ -1467,8 +1467,8 @@ g.Na.all.lmer1f.a1<-lmer(log10(g)~NLIM_Alt1 + (1|Species/Meas) + (1|Site), data 
 confint(g.Na.all.lmer1f.a1) #sig NLIM higher
 summary(g.Na.all.lmer1f.a1) #Int: -0.65 (-0.89, -0.39); NLIM: -0.51; dif: 0.13 (0.01, 0.25)
 
-g.Na.intmu<-summary(g.Na.all.lmer1f.a1)$coefficients[[1,1]]
-g.Na.NLIM.intmu<-summary(g.Na.all.lmer1f.a1)$coefficients[[1,1]]+summary(g.Na.all.lmer1f.a1)$coefficients[[2,1]]
+g.Na.intmu.a1<-summary(g.Na.all.lmer1f.a1)$coefficients[[1,1]]
+g.Na.NLIM.intmu.a1<-summary(g.Na.all.lmer1f.a1)$coefficients[[1,1]]+summary(g.Na.all.lmer1f.a1)$coefficients[[2,1]]
 
 #WUEi~leaf N per area
 WUE.Na.all.lmer1.a1<-lmer(log10(WUE..A.g.)~log10(gN_m.2)*Fixer + log10(gN_m.2)*NLIM_Alt1 + (1|Species/Meas) + (1|Site), data = dat.ge)
@@ -1720,10 +1720,10 @@ summary(Aa.Na.all.lmer7b.a2) #NLIM dif: 0.11 (0.05, 0.17) ***; Fixer dif: 0.10 (
 r.squaredGLMM(Aa.Na.all.lmer7b.a2) #R2m=0.27, R2c=0.74
 confint(Aa.Na.all.lmer7b.a2,level=0.999)
 
-Aa.Na.slopemu<-summary(Aa.Na.all.lmer7b.a2)$coefficients[[2,1]]
-Aa.Na.NSAT.non.intmu<-summary(Aa.Na.all.lmer7b.a2)$coefficients[[1,1]]
-Aa.Na.NLIM.intmu<-summary(Aa.Na.all.lmer7b.a2)$coefficients[[1,1]]+summary(Aa.Na.all.lmer7b.a2)$coefficients[[4,1]]
-Aa.Na.fix.intmu<-summary(Aa.Na.all.lmer7b.a2)$coefficients[[1,1]]+summary(Aa.Na.all.lmer7b.a2)$coefficients[[3,1]]
+Aa.Na.slopemu.a2<-summary(Aa.Na.all.lmer7b.a2)$coefficients[[2,1]]
+Aa.Na.NSAT.non.intmu.a2<-summary(Aa.Na.all.lmer7b.a2)$coefficients[[1,1]]
+Aa.Na.NLIM.intmu.a2<-summary(Aa.Na.all.lmer7b.a2)$coefficients[[1,1]]+summary(Aa.Na.all.lmer7b.a2)$coefficients[[4,1]]
+Aa.Na.fix.intmu.a2<-summary(Aa.Na.all.lmer7b.a2)$coefficients[[1,1]]+summary(Aa.Na.all.lmer7b.a2)$coefficients[[3,1]]
 
 #gsw~leaf N per area
 g.Na.all.lmer1.a2<-lmer(log10(g)~log10(gN_m.2)*Fixer + log10(gN_m.2)*NLIM_Alt2 + (1|Species/Meas) + (1|Site), data = dat.ge)
@@ -1763,8 +1763,8 @@ confint(g.Na.all.lmer1f.a2) #sig NLIM higher
 summary(g.Na.all.lmer1f.a2) #Int: -0.65 (-0.89, -0.40); NLIM: -0.55; dif: 0.11 (0.02, 0.19)
 r.squaredGLMM(g.Na.all.lmer1f.a2) #0.01, 0.71
 
-g.Na.intmu<-summary(g.Na.all.lmer1f.a2)$coefficients[[1,1]]
-g.Na.NLIM.intmu<-summary(g.Na.all.lmer1f.a2)$coefficients[[1,1]]+summary(g.Na.all.lmer1f.a2)$coefficients[[2,1]]
+g.Na.intmu.a2<-summary(g.Na.all.lmer1f.a2)$coefficients[[1,1]]
+g.Na.NLIM.intmu.a2<-summary(g.Na.all.lmer1f.a2)$coefficients[[1,1]]+summary(g.Na.all.lmer1f.a2)$coefficients[[2,1]]
 
 #WUEi~leaf N per area
 WUE.Na.all.lmer1.a2<-lmer(log10(WUE..A.g.)~log10(gN_m.2)*Fixer + log10(gN_m.2)*NLIM_Alt2 + (1|Species/Meas) + (1|Site), data = dat.ge)
@@ -3912,7 +3912,7 @@ legend(log10(18),log10(0.8),c(expression('N fixer slope = 0.54 (0.43, 0.65) ***'
                               expression(Delta*' intercept (N'[LIM-LEAF]*' status) = 0.15 (0.11, 0.20) ***'),
                               expression('R'[m]^2*' = 0.71'),
                               expression('R'[c]^2*' = 0.84')),
-       bty="n",y.intersp = 1,cex=.9,x.intersp = 0.5)
+       bty="n",y.intersp = 0.8,cex=.9,x.intersp = 0.5)
 
 
 plot(log10(X.N_mass)~log10(LMA),dat=dat,xaxt="n",yaxt="n",xlim=c(log10(20),log10(500)),ylim=c(log10(0.25),log10(6)),
@@ -3977,7 +3977,7 @@ legend(log10(18),log10(0.88),c(expression('N fixer slope = '-'0.46 ('-'0.57, '-'
                                expression(Delta*' intercept (N'[LIM-LEAF]*' status) = 0.15 (0.11, 0.20) ***'),
                                expression('R'[m]^2*' = 0.68'),
                                expression('R'[c]^2*' = 0.83')),
-       bty="n",y.intersp = 1,cex=.9,x.intersp = 0.5)
+       bty="n",y.intersp = 0.8,cex=.9,x.intersp = 0.5)
 
 ranef(Aa.Na.all.lmer7c.a1) #species (w/ slope), site
 
@@ -4036,15 +4036,15 @@ segments(log10(min(MOFA.ge$gN_m.2)),c(coef(Aa.Na.all.lmer7c.a1)$Species[7,2]*log
 segments(log10(min(ROPS.ge$gN_m.2)),c(coef(Aa.Na.all.lmer7c.a1)$Species[10,2]*log10(min(ROPS.ge$gN_m.2))+coef(Aa.Na.all.lmer7c.a1)$Species[10,1]+0.03979022),
          log10(max(ROPS.ge$gN_m.2)),c(coef(Aa.Na.all.lmer7c.a1)$Species[10,2]*log10(max(ROPS.ge$gN_m.2))+coef(Aa.Na.all.lmer7c.a1)$Species[10,1]+0.03979022),
          col="cornflowerblue",lty=1)
-segments(log10(min.non.NSAT.Na),c(Aa.Na.slopemu*log10(min.non.NSAT.Na)+Aa.Na.intmu),
-         log10(max.fix.Na),c(Aa.Na.slopemu*log10(max.fix.Na)+Aa.Na.intmu),lwd=3)
-segments(log10(min(na.omit(BENI.NLIM$gN_m.2))),c(Aa.Na.slopemu*log10(min(na.omit(BENI.NLIM$gN_m.2)))+Aa.Na.NLIM.intmu),
-         log10(max(na.omit(BENI.NLIM$gN_m.2))),c(Aa.Na.slopemu*log10(max(na.omit(BENI.NLIM$gN_m.2)))+Aa.Na.NLIM.intmu),lwd=3,lty=4,col="black")
+segments(log10(min.non.NSAT.Na),c(Aa.Na.slopemu.a1*log10(min.non.NSAT.Na)+Aa.Na.intmu.a1),
+         log10(max.fix.Na),c(Aa.Na.slopemu.a1*log10(max.fix.Na)+Aa.Na.intmu.a1),lwd=3)
+segments(log10(min(na.omit(BENI.NLIM$gN_m.2))),c(Aa.Na.slopemu.a1*log10(min(na.omit(BENI.NLIM$gN_m.2)))+Aa.Na.NLIM.intmu.a1),
+         log10(max(na.omit(BENI.NLIM$gN_m.2))),c(Aa.Na.slopemu.a1*log10(max(na.omit(BENI.NLIM$gN_m.2)))+Aa.Na.NLIM.intmu.a1),lwd=3,lty=4,col="black")
 legend(log10(0.7),0.4577314,c(expression('Slope = 0.47 (0.25, 0.67) ***'),
                               expression(Delta*' intercept = 0.09 (0.01, 0.18) *'),
                               expression('R'[m]^2*' = 0.19'),
                               expression('R'[c]^2*' = 0.66')),bty="n",
-       y.intersp = 1,cex=.9,x.intersp = 0.5)
+       y.intersp = 0.8,cex=.9,x.intersp = 0.5)
 mtext(text="c",side=3,cex=1,adj=0)
 
 
@@ -4112,15 +4112,15 @@ axis(2,at=c(log10(0.01),log10(0.1),log10(1)),labels=c(0.01,0.1,1),las=1)
 axis(2,at=c(log10(seq(0.01, 0.1, length.out = 10))),labels=NA,las=1)
 axis(2,at=c(log10(seq(0.1, 1, length.out = 10))),labels=NA,las=1)
 axis(1,at=c(log10(seq(1,7,1))),labels=c(1,2,3,4,5,6,7))
-segments(log10(min.non.NSAT.Na),g.Na.intmu,
-         log10(max.fix.Na),g.Na.intmu,lwd=3)
-segments(log10(min(na.omit(BENI.NLIM$gN_m.2))),g.Na.NLIM.intmu,
-         log10(max(na.omit(BENI.NLIM$gN_m.2))),g.Na.NLIM.intmu,lwd=3,lty=4,col="black")
+segments(log10(min.non.NSAT.Na),g.Na.intmu.a1,
+         log10(max.fix.Na),g.Na.intmu.a1,lwd=3)
+segments(log10(min(na.omit(BENI.NLIM$gN_m.2))),g.Na.NLIM.intmu.a1,
+         log10(max(na.omit(BENI.NLIM$gN_m.2))),g.Na.NLIM.intmu.a1,lwd=3,lty=4,col="black")
 legend(log10(0.7),-1.428571,c(expression('Slope = NS'),
                               expression(Delta*' intercept = 0.13 (0.01, 0.25) *'),
                               expression('R'[m]^2*' = 0.01'),
                               expression('R'[c]^2*' = 0.71')),bty="n",
-       y.intersp = 1,cex=.9,x.intersp = 0.5)
+       y.intersp = 0.8,cex=.9,x.intersp = 0.5)
 mtext(text="d",side=3,cex=1,adj=0)
 
 
@@ -4205,7 +4205,7 @@ legend(log10(18),log10(0.8),c(expression('N fixer slope = 0.53 (0.42, 0.64) ***'
                               expression(Delta*' slope (N'[LIM-LEAF]*' status) = 0.23 (0.08, 0.38) **'),
                               expression('R'[m]^2*' = 0.68'),
                               expression('R'[c]^2*' = 0.84')),
-       bty="n",y.intersp = 1,cex=.9,x.intersp = 0.5)
+       bty="n",y.intersp = 0.8,cex=.9,x.intersp = 0.5)
 
 
 plot(log10(X.N_mass)~log10(LMA),dat=dat,xaxt="n",yaxt="n",xlim=c(log10(20),log10(500)),ylim=c(log10(0.2),log10(6)),
@@ -4279,7 +4279,7 @@ legend(log10(18),log10(0.88),c(expression('N fixer slope = '-'0.47 ('-'0.58, '-'
                                expression(Delta*' slope (N'[LIM-LEAF]*' status) = 0.24 (0.09, 0.38) **'),
                                expression('R'[m]^2*' = 0.68'),
                                expression('R'[c]^2*' = 0.84')),
-       bty="n",y.intersp = 1,cex=.9,x.intersp = 0.5)
+       bty="n",y.intersp = 0.8,cex=.9,x.intersp = 0.5)
 
 ranef(Aa.Na.all.lmer7b.a2) #species (w/ slope), site
 
@@ -4346,18 +4346,18 @@ segments(log10(min(MOFA.ge$gN_m.2)),c(coef(Aa.Na.all.lmer7b.a2)$Species[7,2]*log
 segments(log10(min(ROPS.ge$gN_m.2)),c(coef(Aa.Na.all.lmer7b.a2)$Species[10,2]*log10(min(ROPS.ge$gN_m.2))+coef(Aa.Na.all.lmer7b.a2)$Species[10,1]+0.07526141),
          log10(max(ROPS.ge$gN_m.2)),c(coef(Aa.Na.all.lmer7b.a2)$Species[10,2]*log10(max(ROPS.ge$gN_m.2))+coef(Aa.Na.all.lmer7b.a2)$Species[10,1]+0.07526141),
          col="cornflowerblue",lty=1)
-segments(log10(min.fix.Na),c(Aa.Na.slopemu*log10(min.fix.Na)+Aa.Na.fix.intmu),
-         log10(max.fix.Na),c(Aa.Na.slopemu*log10(max.fix.Na)+Aa.Na.fix.intmu),lwd=3,lty=1)
-segments(log10(min.non.NSAT.Na),c(Aa.Na.slopemu*log10(min.non.NSAT.Na)+Aa.Na.NSAT.non.intmu),
-         log10(max.non.NSAT.Na),c(Aa.Na.slopemu*log10(max.non.NSAT.Na)+Aa.Na.NSAT.non.intmu),lwd=3,lty=2)
-segments(log10(min.non.NLIM.Na),c(Aa.Na.slopemu*log10(min.non.NLIM.Na)+Aa.Na.NLIM.intmu),
-         log10(max.non.NLIM.Na),c(Aa.Na.slopemu*log10(max.non.NLIM.Na)+Aa.Na.NLIM.intmu),lwd=3,lty=4,col="black")
+segments(log10(min.fix.Na),c(Aa.Na.slopemu.a2*log10(min.fix.Na)+Aa.Na.fix.intmu.a2),
+         log10(max.fix.Na),c(Aa.Na.slopemu.a2*log10(max.fix.Na)+Aa.Na.fix.intmu.a2),lwd=3,lty=1)
+segments(log10(min.non.NSAT.Na),c(Aa.Na.slopemu.a2*log10(min.non.NSAT.Na)+Aa.Na.NSAT.non.intmu.a2),
+         log10(max.non.NSAT.Na),c(Aa.Na.slopemu.a2*log10(max.non.NSAT.Na)+Aa.Na.NSAT.non.intmu.a2),lwd=3,lty=2)
+segments(log10(min.non.NLIM.Na),c(Aa.Na.slopemu.a2*log10(min.non.NLIM.Na)+Aa.Na.NLIM.intmu.a2),
+         log10(max.non.NLIM.Na),c(Aa.Na.slopemu.a2*log10(max.non.NLIM.Na)+Aa.Na.NLIM.intmu.a2),lwd=3,lty=4,col="black")
 legend(log10(0.7),0.55,c(expression('Slope = 0.48 (0.25, 0.70) ***'),
                          expression(Delta*' intercept (fixer status) = 0.10 (0.00, 0.19) *'),
                          expression(Delta*' intercept (N'[LIM-LEAF]*' status) = 0.11 (0.05, 0.17) ***'),
                          expression('R'[m]^2*' = 0.27'),
                          expression('R'[c]^2*' = 0.74')),bty="n",
-       y.intersp = 1,cex=.9,x.intersp = 0.5)
+       y.intersp = 0.8,cex=.9,x.intersp = 0.5)
 mtext(text="c",side=3,cex=1,adj=0)
 
 ranef(g.Na.all.lmer1f.a2)
@@ -4433,15 +4433,15 @@ axis(2,at=c(log10(0.01),log10(0.1),log10(1)),labels=c(0.01,0.1,1),las=1)
 axis(2,at=c(log10(seq(0.01, 0.1, length.out = 10))),labels=NA,las=1)
 axis(2,at=c(log10(seq(0.1, 1, length.out = 10))),labels=NA,las=1)
 axis(1,at=c(log10(seq(1,7,1))),labels=c(1,2,3,4,5,6,7))
-segments(log10(min.non.NSAT.Na),g.Na.intmu,
-         log10(max.fix.Na),g.Na.intmu,lwd=3)
-segments(log10(min.non.NLIM.Na),g.Na.NLIM.intmu,
-         log10(max.non.NLIM.Na),g.Na.NLIM.intmu,lwd=3,lty=4,col="black")
+segments(log10(min.non.NSAT.Na),g.Na.intmu.a2,
+         log10(max.fix.Na),g.Na.intmu.a2,lwd=3)
+segments(log10(min.non.NLIM.Na),g.Na.NLIM.intmu.a2,
+         log10(max.non.NLIM.Na),g.Na.NLIM.intmu.a2,lwd=3,lty=4,col="black")
 legend(log10(0.7),-1.428571,c(expression('Slope = NS'),
                               expression(Delta*' intercept = 0.11 (0.02, 0.19) *'),
                               expression('R'[m]^2*' = 0.01'),
                               expression('R'[c]^2*' = 0.71')),bty="n",
-       y.intersp = 1,cex=.9,x.intersp = 0.5)
+       y.intersp = 0.8,cex=.9,x.intersp = 0.5)
 mtext(text="d",side=3,cex=1,adj=0)
 
 dev.off()
