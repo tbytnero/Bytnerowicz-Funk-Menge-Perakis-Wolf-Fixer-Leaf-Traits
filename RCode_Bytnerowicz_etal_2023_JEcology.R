@@ -1,5 +1,5 @@
 #######################################################################################################
-#R code for Bytnerowicz et al., 2023, submitted to Journal of Ecology
+#R code for Bytnerowicz et al., 2023, Journal of Ecology
 #######################################################################################################
 
 #Analysis is first, followed by the figures
